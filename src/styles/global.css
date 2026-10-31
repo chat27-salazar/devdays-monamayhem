@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Press+Start+2P&display=swap');
+
+:root {
+	--arcade-bg: #0a0a12;
+	--arcade-panel: #11111f;
+	--arcade-panel-raised: #171728;
+	--arcade-text: #e8e8f0;
+	--arcade-muted: #9292a8;
+	--player-one: #39ffb6;
+	--player-one-soft: #00e5ff;
+	--player-two: #ff4fd8;
+	--player-two-soft: #ffd166;
+	--arcade-display-font: 'Press Start 2P', 'Courier New', monospace;
+	--arcade-body-font: 'JetBrains Mono', 'Courier New', monospace;
+
+	color: var(--arcade-text);
+	background: var(--arcade-bg);
+	font-family: var(--arcade-body-font);
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+}
+
+html {
+	min-width: 320px;
+	min-height: 100%;
+	background: var(--arcade-bg);
+}
+
+body {
+	position: relative;
+	min-height: 100vh;
+	margin: 0;
+	background:
+		radial-gradient(ellipse at center, transparent 42%, rgb(0 0 0 / 72%) 100%),
+		var(--arcade-bg);
+}
+
+body::before {
+	position: fixed;
+	z-index: 5;
+	pointer-events: none;
+	inset: 0;
+	background: repeating-linear-gradient(
+		to bottom,
+		transparent 0,
+		transparent 3px,
+		rgb(0 0 0 / 9%) 4px
+	);
+	content: '';
+}
+
+body::after {
+	position: fixed;
+	z-index: 4;
+	pointer-events: none;
+	inset: 0;
+	background: radial-gradient(ellipse at center, transparent 45%, rgb(0 0 0 / 46%) 100%);
+	content: '';
+}
+
+button,
+input {
+	font: inherit;
+}
+
+button:focus-visible,
+input:focus-visible {
+	outline: 2px solid var(--player-two-soft);
+	outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		scroll-behavior: auto !important;
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}

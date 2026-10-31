@@ -1,17 +1,933 @@
 ---
+import '../styles/global.css';
 
+const pageTitle = 'Mona Mayhem | GitHub Contribution Battle Arena';
 ---
 
+<!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Mona Mayhem</title>
+		<title>{pageTitle}</title>
 	</head>
 	<body>
-		<h1>Mona Mayhem</h1>
-		<p>Welcome to Mona Mayhem! Time to build a GitHub Contribution Battle Arena.</p>
+		<main class="arena">
+			<header class="page-header">
+				<div class="header-toolbar">
+					<button
+						id="sfx-toggle"
+						class="sfx-toggle"
+						type="button"
+						aria-label="Mute sound effects"
+						aria-pressed="true"
+					>
+						🔊 SFX: ON
+					</button>
+				</div>
+				<p class="eyebrow">GitHub contribution battle arena</p>
+				<h1>Mona Mayhem</h1>
+				<p>Choose two GitHub users to enter the arena.</p>
+			</header>
+
+			<form class="battle-form" id="battle-form">
+				<div class="player-input">
+					<label for="player-one">Player 1</label>
+					<input
+						id="player-one"
+						name="playerOne"
+						type="text"
+						required
+						placeholder="GitHub username"
+						autocomplete="off"
+						autocapitalize="none"
+						spellcheck="false"
+					/>
+				</div>
+				<p class="versus" aria-hidden="true">VS</p>
+				<div class="player-input">
+					<label for="player-two">Player 2</label>
+					<input
+						id="player-two"
+						name="playerTwo"
+						type="text"
+						required
+						placeholder="GitHub username"
+						autocomplete="off"
+						autocapitalize="none"
+						spellcheck="false"
+					/>
+				</div>
+				<button id="battle-button" type="submit">BATTLE!</button>
+			</form>
+
+			<div class="quick-matchups" aria-label="Quick matchups">
+				<p>Quick matchups</p>
+				<button type="button" data-player-one="torvalds" data-player-two="gaearon">
+					torvalds vs. gaearon
+				</button>
+				<button type="button" data-player-one="octocat" data-player-two="sindresorhus">
+					octocat vs. sindresorhus
+				</button>
+			</div>
+
+			<div class="status ready-indicator" id="battle-status" role="status" aria-live="polite" aria-atomic="true">
+				<p>INSERT COIN <span aria-hidden="true">/</span> READY PLAYER 1</p>
+			</div>
+
+			<div class="fight-overlay" id="fight-overlay" role="status" aria-live="assertive" hidden>
+				<p>PLAYER 1 <span>VS</span> PLAYER 2</p>
+				<strong id="fight-call">3</strong>
+			</div>
+
+			<section class="results" aria-label="Battle results" aria-busy="false">
+				<section class="power-bars" aria-label="Player power bars">
+					<div class="power-bar player-one">
+						<div class="power-label"><span>PLAYER 1</span><span id="player-one-power">100%</span></div>
+						<div class="power-track"><span id="player-one-power-fill"></span></div>
+					</div>
+					<p class="power-vs" aria-hidden="true">VS</p>
+					<div class="power-bar player-two">
+						<div class="power-label"><span>PLAYER 2</span><span id="player-two-power">100%</span></div>
+						<div class="power-track"><span id="player-two-power-fill"></span></div>
+					</div>
+				</section>
+				<header class="scoreboard">
+					<p class="eyebrow">Battle scoreboard</p>
+					<h2 id="winner-banner" aria-live="polite" aria-atomic="true">Contribution heatmaps</h2>
+					<p id="battle-scoreline" aria-live="polite" aria-atomic="true">
+						Enter two GitHub usernames to compare their activity.
+					</p>
+					<div class="particles" id="victory-particles" aria-hidden="true"></div>
+				</header>
+
+				<div class="player-arena">
+					<article class="player-card player-one" aria-label="Player 1 arena card">
+						<header class="player-profile">
+							<img class="avatar" id="player-one-avatar" alt="" width="48" height="48" hidden />
+							<div>
+								<p class="eyebrow">Player 1</p>
+								<h3 id="player-one-username">GitHub profile</h3>
+								<p class="player-summary" id="player-one-summary">No contribution data loaded.</p>
+								<p class="fighter-class" id="player-one-class" hidden></p>
+							</div>
+						</header>
+						<section aria-label="Player 1 contribution calendar">
+							<h4>Contribution calendar</h4>
+							<p class="player-error" id="player-one-error" role="alert" hidden></p>
+							<div
+								class="contribution-grid"
+								id="player-one-heatmap"
+								role="grid"
+								aria-label="Player 1 contribution calendar"
+								aria-busy="false"
+							></div>
+						</section>
+						<section aria-label="Player 1 summary statistics">
+							<h4>Summary stats</h4>
+							<dl class="stats">
+								<div class="stat-row" data-stat="total"><dt>Total Commits</dt><dd id="player-one-total">—</dd></div>
+								<div class="stat-row" data-stat="longest"><dt>Longest Streak</dt><dd id="player-one-longest">—</dd></div>
+								<div class="stat-row" data-stat="current"><dt>Current Streak</dt><dd id="player-one-current">—</dd></div>
+								<div class="stat-row" data-stat="peak"><dt>Peak Day</dt><dd id="player-one-peak">—</dd></div>
+								<div class="stat-row" data-stat="consistency"><dt>Consistency</dt><dd id="player-one-consistency">—</dd></div>
+							</dl>
+						</section>
+					</article>
+
+					<article class="player-card player-two" aria-label="Player 2 arena card">
+						<header class="player-profile">
+							<img class="avatar" id="player-two-avatar" alt="" width="48" height="48" hidden />
+							<div>
+								<p class="eyebrow">Player 2</p>
+								<h3 id="player-two-username">GitHub profile</h3>
+								<p class="player-summary" id="player-two-summary">No contribution data loaded.</p>
+								<p class="fighter-class" id="player-two-class" hidden></p>
+							</div>
+						</header>
+						<section aria-label="Player 2 contribution calendar">
+							<h4>Contribution calendar</h4>
+							<p class="player-error" id="player-two-error" role="alert" hidden></p>
+							<div
+								class="contribution-grid"
+								id="player-two-heatmap"
+								role="grid"
+								aria-label="Player 2 contribution calendar"
+								aria-busy="false"
+							></div>
+						</section>
+						<section aria-label="Player 2 summary statistics">
+							<h4>Summary stats</h4>
+							<dl class="stats">
+								<div class="stat-row" data-stat="total"><dt>Total Commits</dt><dd id="player-two-total">—</dd></div>
+								<div class="stat-row" data-stat="longest"><dt>Longest Streak</dt><dd id="player-two-longest">—</dd></div>
+								<div class="stat-row" data-stat="current"><dt>Current Streak</dt><dd id="player-two-current">—</dd></div>
+								<div class="stat-row" data-stat="peak"><dt>Peak Day</dt><dd id="player-two-peak">—</dd></div>
+								<div class="stat-row" data-stat="consistency"><dt>Consistency</dt><dd id="player-two-consistency">—</dd></div>
+							</dl>
+						</section>
+					</article>
+				</div>
+			</section>
+		</main>
 	</body>
 </html>
+
+<style>
+	:root {
+		color: var(--arcade-text);
+		background: var(--arcade-bg);
+	}
+
+	@keyframes knockout-flash {
+		50% {
+			opacity: 0.3;
+			transform: scale(1.12);
+		}
+	}
+
+	body {
+		margin: 0;
+		background: transparent;
+	}
+
+	.arena {
+		position: relative;
+		z-index: 1;
+		width: min(1120px, calc(100% - 32px));
+		margin: 0 auto;
+		padding: 48px 0;
+	}
+
+	.page-header,
+	.scoreboard {
+		text-align: center;
+	}
+
+	.page-header {
+		margin-bottom: 32px;
+	}
+
+	.header-toolbar {
+		display: flex;
+		justify-content: flex-end;
+		margin-bottom: 12px;
+	}
+
+	.sfx-toggle {
+		min-height: 38px;
+		padding: 8px 10px;
+		border-color: var(--player-two);
+		background: var(--arcade-panel);
+		color: var(--arcade-text);
+		font-family: var(--arcade-body-font);
+		font-size: 0.72rem;
+		box-shadow: 0 0 12px rgb(255 79 216 / 18%);
+	}
+
+	.sfx-toggle:hover:not(:disabled) {
+		box-shadow: 0 0 18px rgb(255 79 216 / 42%);
+	}
+
+	.eyebrow {
+		color: var(--player-one);
+		font-family: var(--arcade-display-font);
+		font-size: 0.58rem;
+		line-height: 1.8;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+	}
+
+	h1 {
+		margin: 20px 0;
+		color: #f7fbff;
+		font-family: var(--arcade-display-font);
+		font-size: clamp(1.3rem, 4vw, 2.35rem);
+		line-height: 1.7;
+		text-transform: uppercase;
+		text-shadow:
+			0 0 7px var(--player-one),
+			0 0 20px var(--player-one-soft),
+			0 0 44px rgb(0 229 255 / 54%);
+		animation: neon-flicker 4s infinite;
+	}
+
+	.page-header > p:last-child {
+		color: var(--arcade-muted);
+		font-size: 0.9rem;
+	}
+
+	.scoreboard h2 {
+		color: var(--player-two-soft);
+		font-family: var(--arcade-display-font);
+		font-size: clamp(0.7rem, 2vw, 1rem);
+		line-height: 1.8;
+		text-shadow: 0 0 12px rgb(255 209 102 / 70%);
+	}
+
+	h3,
+	h4 {
+		font-family: var(--arcade-display-font);
+		font-size: 0.62rem;
+		line-height: 1.8;
+	}
+
+	.battle-form,
+	.player-card,
+	.scoreboard,
+	.status {
+	border: 1px solid rgb(0 229 255 / 38%);
+	background: linear-gradient(145deg, rgb(20 20 38 / 96%), rgb(10 10 18 / 98%));
+	padding: 20px;
+	box-shadow:
+		0 0 12px rgb(0 229 255 / 8%),
+		inset 0 0 20px rgb(0 229 255 / 3%);
+	}
+
+	.battle-form {
+		display: grid;
+		grid-template-columns: 1fr auto 1fr auto;
+		align-items: end;
+		gap: 16px;
+		animation: cabinet-enter 500ms ease-out both;
+	}
+
+	.player-input label {
+		display: block;
+		margin-bottom: 10px;
+		color: var(--arcade-muted);
+		font-family: var(--arcade-display-font);
+		font-size: 0.55rem;
+	}
+
+	input,
+	button {
+		min-height: 48px;
+		padding: 10px 14px;
+		font-family: var(--arcade-body-font);
+	}
+
+	input {
+		width: 100%;
+		box-sizing: border-box;
+		color: inherit;
+		background: #080810;
+		border: 1px solid #39394f;
+		transition: border-color 160ms ease, box-shadow 160ms ease;
+	}
+
+	.player-input:first-child input:focus {
+		border-color: var(--player-one);
+		box-shadow: 0 0 14px rgb(57 255 182 / 24%);
+	}
+
+	.player-input:nth-of-type(2) input:focus {
+		border-color: var(--player-two);
+		box-shadow: 0 0 14px rgb(255 79 216 / 24%);
+	}
+
+	button {
+		border: 1px solid var(--player-one);
+		background: var(--player-one);
+		color: #07120f;
+		font-family: var(--arcade-display-font);
+		font-size: 0.58rem;
+		font-weight: 700;
+		cursor: pointer;
+		box-shadow: 0 0 16px rgb(57 255 182 / 24%);
+		transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
+	}
+
+	button:hover:not(:disabled) {
+		transform: translateY(-2px);
+		filter: brightness(1.1);
+		box-shadow: 0 0 22px rgb(57 255 182 / 52%);
+	}
+
+	button:disabled {
+		opacity: 0.55;
+		cursor: wait;
+	}
+
+	.quick-matchups {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px;
+		margin: 12px 0;
+	}
+
+	.quick-matchups p {
+		margin: 0 4px 0 0;
+		color: var(--arcade-muted);
+		font-size: 0.78rem;
+	}
+
+	.quick-matchups button {
+		min-height: 38px;
+		padding: 7px 10px;
+		border: 1px solid rgb(0 229 255 / 45%);
+		background: #11111f;
+		color: var(--arcade-text);
+		font-size: 0.72rem;
+		box-shadow: none;
+	}
+
+	.quick-matchups button:hover:not(:disabled) {
+		border-color: var(--player-one);
+		box-shadow: 0 0 12px rgb(57 255 182 / 24%);
+	}
+
+	.quick-matchups button:disabled {
+		opacity: 0.6;
+		cursor: wait;
+	}
+
+	.versus {
+		color: var(--player-two);
+		font-family: var(--arcade-display-font);
+		font-size: 0.7rem;
+		text-shadow: 0 0 12px var(--player-two);
+		animation: versus-pulse 1.7s ease-in-out infinite alternate;
+	}
+
+	.status {
+		margin: 16px 0;
+		color: var(--player-one);
+		font-family: var(--arcade-display-font);
+		font-size: clamp(0.48rem, 1.4vw, 0.68rem);
+		line-height: 2;
+		text-align: center;
+		letter-spacing: 0.04em;
+	}
+
+	.ready-indicator {
+		border-color: rgb(57 255 182 / 65%);
+		color: var(--player-one);
+		text-shadow: 0 0 10px rgb(57 255 182 / 78%);
+		animation: coin-blink 1.15s steps(2, start) infinite;
+	}
+
+	.status.is-error {
+		border-color: var(--player-two);
+		color: #ff9add;
+		text-shadow: 0 0 10px rgb(255 79 216 / 58%);
+	}
+
+	.status p {
+		margin: 0;
+	}
+
+	.fight-overlay {
+		position: fixed;
+		z-index: 20;
+		inset: 0;
+		display: grid;
+		align-content: center;
+		justify-items: center;
+		gap: 28px;
+		background: rgb(5 5 12 / 88%);
+		backdrop-filter: blur(5px);
+		font-family: var(--arcade-display-font);
+		text-align: center;
+	}
+
+	.fight-overlay[hidden] {
+		display: none;
+	}
+
+	.fight-overlay p {
+		color: var(--arcade-text);
+		font-size: clamp(0.55rem, 2vw, 0.9rem);
+		line-height: 2;
+	}
+
+	.fight-overlay p span {
+		padding: 0 12px;
+		color: var(--player-two);
+		text-shadow: 0 0 16px var(--player-two);
+	}
+
+	.fight-overlay strong {
+		color: var(--player-one);
+		font-size: clamp(2.5rem, 12vw, 6rem);
+		text-shadow: 0 0 12px var(--player-one), 0 0 38px var(--player-one-soft);
+		animation: countdown-impact 450ms ease-out both;
+	}
+
+	.power-bars {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+		align-items: center;
+		gap: 16px;
+		margin: 0 0 18px;
+		padding: 12px 16px;
+		border: 1px solid #343449;
+		background: #0c0c16;
+	}
+
+	.power-label {
+		display: flex;
+		justify-content: space-between;
+		gap: 8px;
+		margin-bottom: 7px;
+		color: var(--player-one);
+		font-family: var(--arcade-display-font);
+		font-size: 0.48rem;
+	}
+
+	.player-two .power-label {
+		color: var(--player-two-soft);
+	}
+
+	.power-track {
+		height: 12px;
+		padding: 2px;
+		border: 1px solid currentColor;
+		color: var(--player-one);
+		transform: skewX(-10deg);
+	}
+
+	.player-two .power-track {
+		color: var(--player-two);
+	}
+
+	.power-track > span {
+		display: block;
+		width: 100%;
+		height: 100%;
+		background: currentColor;
+		box-shadow: 0 0 10px currentColor;
+		transition: width 350ms ease-out;
+	}
+
+	.player-two .power-track > span {
+		margin-left: auto;
+	}
+
+	.power-vs {
+		margin: 0;
+		color: var(--player-two);
+		font-family: var(--arcade-display-font);
+		font-size: 0.55rem;
+	}
+
+	.scoreboard {
+		margin-bottom: 20px;
+		border-color: rgb(255 209 102 / 55%);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.scoreboard .eyebrow {
+		color: var(--player-two-soft);
+	}
+
+	#battle-scoreline {
+		color: var(--arcade-muted);
+		font-size: 0.85rem;
+	}
+
+	.player-arena {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 20px;
+	}
+
+	.player-card {
+		--player-accent: var(--player-one);
+		--player-accent-secondary: var(--player-one-soft);
+		--player-glow: 57 255 182;
+		border-color: color-mix(in srgb, var(--player-accent) 70%, transparent);
+		box-shadow:
+			0 0 20px rgb(var(--player-glow) / 10%),
+			inset 0 0 22px rgb(var(--player-glow) / 4%);
+	}
+
+	.player-two {
+		--player-accent: var(--player-two);
+		--player-accent-secondary: var(--player-two-soft);
+		--player-glow: 255 79 216;
+	}
+
+	.player-one .eyebrow,
+	.player-one h3,
+	.player-one .stats dd {
+		color: var(--player-one);
+		text-shadow: 0 0 10px rgb(57 255 182 / 35%);
+	}
+
+	.player-two .eyebrow,
+	.player-two h3,
+	.player-two .stats dd {
+		color: var(--player-two-soft);
+		text-shadow: 0 0 10px rgb(255 209 102 / 35%);
+	}
+
+	.player-profile {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+	}
+
+	.player-profile h3,
+	.player-profile p {
+		margin: 4px 0;
+	}
+
+	.fighter-class {
+		display: inline-block;
+		width: fit-content;
+		padding: 6px 9px;
+		border: 1px solid var(--player-accent);
+		background: rgb(var(--player-glow) / 10%);
+		color: var(--player-accent);
+		font-family: var(--arcade-display-font);
+		font-size: 0.48rem;
+		line-height: 1.8;
+		text-shadow: 0 0 8px rgb(var(--player-glow) / 55%);
+		box-shadow: 0 0 10px rgb(var(--player-glow) / 16%);
+	}
+
+	.fighter-class[hidden] {
+		display: none;
+	}
+
+	.player-card h4 {
+		margin: 22px 0 10px;
+		color: var(--player-accent-secondary);
+		font-size: 0.52rem;
+	}
+
+	.stats {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 8px;
+		margin: 0;
+	}
+
+	.stats div {
+		padding: 10px;
+		border: 1px solid rgb(255 255 255 / 6%);
+		background: rgb(0 0 0 / 28%);
+	}
+
+	:global(.stat-row) {
+		opacity: 0.35;
+		transform: translateY(6px);
+	}
+
+	:global(.stat-row.is-revealed) {
+		animation: stat-reveal 300ms ease-out forwards;
+	}
+
+	.scoreboard.is-victory {
+		animation: victory-banner 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+	}
+
+	.scoreboard.is-victory h2 {
+		color: var(--player-one);
+		font-size: clamp(1rem, 4vw, 2rem);
+		text-shadow: 0 0 12px var(--player-one), 0 0 30px var(--player-one-soft);
+	}
+
+	.scoreboard.is-knockout h2 {
+		color: var(--player-two-soft);
+		text-shadow: 0 0 12px var(--player-two), 0 0 32px var(--player-two-soft);
+		animation: knockout-flash 500ms steps(2, end) 3;
+	}
+
+	.particles {
+		position: absolute;
+		pointer-events: none;
+		inset: 50% 0 auto;
+	}
+
+	:global(.victory-particle) {
+		position: absolute;
+		left: 50%;
+		top: 0;
+		width: 7px;
+		height: 7px;
+		background: var(--particle-color, var(--player-one));
+		box-shadow: 0 0 10px var(--particle-color, var(--player-one));
+		animation: particle-burst 900ms ease-out forwards;
+	}
+
+	.arena.screen-shake {
+		animation: screen-shake 420ms ease-out;
+	}
+
+	.stats dt {
+		color: var(--arcade-muted);
+		font-family: var(--arcade-body-font);
+		font-size: 0.68rem;
+	}
+
+	.stats dd {
+		margin: 4px 0 0;
+		font-family: var(--arcade-body-font);
+		font-size: 0.83rem;
+	}
+
+	.player-summary {
+		margin: 4px 0;
+		color: var(--arcade-muted);
+		font-family: var(--arcade-body-font);
+		font-size: 0.8rem;
+	}
+
+	.avatar {
+		width: 48px;
+		height: 48px;
+		border: 1px solid var(--player-accent);
+		box-shadow: 0 0 12px rgb(var(--player-glow) / 32%);
+		image-rendering: pixelated;
+	}
+
+	.contribution-grid {
+		display: grid;
+		grid-template-rows: repeat(7, 12px);
+		grid-auto-columns: 12px;
+		grid-auto-flow: column;
+		gap: 3px;
+		min-height: 108px;
+		overflow-x: auto;
+		padding: 4px;
+	}
+
+	:global(.contribution-cell) {
+		width: 12px;
+		height: 12px;
+		border: 1px solid rgb(255 255 255 / 4%);
+		border-radius: 2px;
+		background: #191925;
+		transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+	}
+
+	:global(.contribution-cell:not(.skeleton-cell):hover) {
+		z-index: 1;
+		transform: scale(1.45);
+		filter: brightness(1.35);
+	}
+
+	.grid-reveal :global(.contribution-cell) {
+		animation: grid-column-fill 260ms ease-out both;
+		animation-delay: calc(var(--week, 0) * 14ms);
+	}
+
+	:global(.contribution-cell[data-level='1']) {
+		background: color-mix(in srgb, var(--player-accent) 24%, #101018);
+		box-shadow: 0 0 4px rgb(var(--player-glow) / 15%);
+	}
+
+	:global(.contribution-cell[data-level='2']) {
+		background: color-mix(in srgb, var(--player-accent) 48%, #101018);
+		box-shadow: 0 0 6px rgb(var(--player-glow) / 30%);
+	}
+
+	:global(.contribution-cell[data-level='3']) {
+		background: color-mix(in srgb, var(--player-accent) 74%, #101018);
+		box-shadow: 0 0 9px rgb(var(--player-glow) / 48%);
+	}
+
+	:global(.contribution-cell[data-level='4']) {
+		background: var(--player-accent-secondary);
+		box-shadow: 0 0 6px var(--player-accent), 0 0 14px rgb(var(--player-glow) / 72%);
+	}
+
+	:global(.skeleton-cell) {
+		background: #29293b;
+		animation: pulse 1.2s ease-in-out infinite alternate;
+	}
+
+	.player-error {
+		margin: 8px 0;
+		color: #ff9add;
+		font-size: 0.8rem;
+	}
+
+	@keyframes pulse {
+		to {
+			opacity: 0.35;
+		}
+	}
+
+	@keyframes coin-blink {
+		50% {
+			opacity: 0.38;
+			text-shadow: none;
+		}
+	}
+
+	@keyframes versus-pulse {
+		to {
+			transform: scale(1.12);
+			text-shadow: 0 0 20px var(--player-two);
+		}
+	}
+
+	@keyframes neon-flicker {
+		0%,
+		18%,
+		22%,
+		65%,
+		72%,
+		100% {
+			opacity: 1;
+		}
+		20%,
+		68% {
+			opacity: 0.82;
+		}
+	}
+
+	@keyframes cabinet-enter {
+		from {
+			opacity: 0;
+			transform: translateY(10px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes countdown-impact {
+		from {
+			opacity: 0;
+			transform: scale(2.2);
+		}
+		70% {
+			transform: scale(0.88);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	@keyframes grid-column-fill {
+		from {
+			opacity: 0;
+			transform: translateY(8px) scale(0.6);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
+	}
+
+	@keyframes stat-reveal {
+		to {
+			opacity: 1;
+			transform: translateY(0);
+			border-color: color-mix(in srgb, var(--player-accent) 48%, transparent);
+			box-shadow: 0 0 12px rgb(var(--player-glow) / 12%);
+		}
+	}
+
+	@keyframes victory-banner {
+		0% {
+			opacity: 0;
+			transform: scale(0.72);
+			filter: brightness(2);
+		}
+		65% {
+			transform: scale(1.06);
+		}
+		100% {
+			opacity: 1;
+			transform: scale(1);
+			filter: brightness(1);
+		}
+	}
+
+	@keyframes screen-shake {
+		0%,
+		100% {
+			transform: translateX(0);
+		}
+		20% {
+			transform: translateX(-8px);
+		}
+		40% {
+			transform: translateX(7px);
+		}
+		60% {
+			transform: translateX(-5px);
+		}
+		80% {
+			transform: translateX(4px);
+		}
+	}
+
+	@keyframes particle-burst {
+		to {
+			opacity: 0;
+			transform: translate(var(--particle-x), var(--particle-y)) rotate(220deg) scale(0.2);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global(.skeleton-cell) {
+			animation: none;
+		}
+		.grid-reveal :global(.contribution-cell),
+		.ready-indicator,
+		h1,
+		.versus,
+		.scoreboard.is-victory,
+		.scoreboard.is-knockout h2,
+		.arena.screen-shake,
+		:global(.victory-particle),
+		:global(.stat-row.is-revealed) {
+			animation: none;
+		}
+		.power-track > span {
+			transition: none;
+		}
+	}
+
+	@media (max-width: 700px) {
+		.battle-form {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		.versus {
+			display: none;
+		}
+
+		.battle-form button {
+			grid-column: 1 / -1;
+		}
+
+		.player-arena {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 440px) {
+		.battle-form {
+			grid-template-columns: 1fr;
+		}
+
+		.arena {
+			padding: 28px 0;
+		}
+
+		.player-card,
+		.scoreboard,
+		.battle-form {
+			padding: 14px;
+		}
+
+		.stats {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+</style>
+
+<script src="../scripts/contribution-battle.ts"></script>
