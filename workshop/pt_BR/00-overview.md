@@ -1,5 +1,5 @@
 <!-- l10n-sync: source-file="workshop/00-overview.md" -->
-# 🎮 Mona Mayhem — Workshop de GitHub Copilot
+# 🎮 Mona Mayhem — Workshop do GitHub Copilot
 
 ---
 
@@ -11,7 +11,7 @@ Construa um aplicativo retro estilo arcade para comparar contribuições do GitH
 
 ---
 
-## 🎯 Escolha Sua Trilha
+## 🎯 Escolha sua trilha
 
 - **Trilha VS Code** — fique no editor e pratique Chat, Plan Mode, Agent Mode, agentes em segundo plano e o ciclo de revisão integrado.
 - **Trilha CLI** — fique no terminal e pratique `copilot`, contexto com `@file`, `/plan`, edições autônomas, `/fleet`, `/delegate` e `/review`.
@@ -20,7 +20,7 @@ Siga a trilha que corresponde ao seu fluxo de trabalho preferido.
 
 ---
 
-## 📋 Lista de Verificação Rápida
+## 📋 Lista rápida de verificação
 
 Antes de começar, verifique:
 
@@ -45,18 +45,18 @@ Antes de começar, verifique:
 
 ---
 
-## 🧠 O Que Você Vai Aprender
+## 🧠 O que você vai aprender
 
 | # | Habilidade | Descrição |
 |---|------------|-----------|
-| 1 | **Context Engineering** | Ensine o Copilot sobre sua base de código com instruções, referências e restrições claras |
+| 1 | **Engenharia de contexto** | Ensine ao Copilot como é sua base de código com instruções, referências e restrições claras |
 | 2 | **Planejar Primeiro** | Projete a arquitetura antes da implementação |
 | 3 | **Implementação Agêntica** | Deixe o Copilot realizar trabalho de codificação em múltiplas etapas com sua supervisão |
 | 4 | **Design Iterativo** | Use o Copilot para transformar visuais e refinar detalhes de interação |
 | 5 | **Fluxos de Trabalho Paralelos** | Divida o trabalho entre agentes, sessões ou tarefas delegadas |
 
 <!-- track:vscode:start -->
-### Foco em Funcionalidades do VS Code
+### Recursos do VS Code em foco
 
 - **Chat + modo Ask** para exploração
 - **Plan Mode** para prompts de arquitetura e design
@@ -65,7 +65,7 @@ Antes de começar, verifique:
 <!-- track:vscode:end -->
 
 <!-- track:cli:start -->
-### Foco em Funcionalidades do Copilot CLI
+### Recursos do Copilot CLI em foco
 
 - **Sessões interativas do CLI** com `copilot`
 - **`/plan` e Shift+Tab** para planejamento estruturado
@@ -75,7 +75,7 @@ Antes de começar, verifique:
 
 ---
 
-## 📚 Partes do Laboratório
+## 📚 Partes do workshop
 
 | Parte | Título | Descrição |
 |-------|--------|-----------|
@@ -88,7 +88,7 @@ Antes de começar, verifique:
 
 ---
 
-## 💡 Dicas Pro
+## 💡 Dicas profissionais
 
 1. **Mantenha o navegador aberto** — observe as atualizações em tempo real enquanto programa.
 2. **Faça commits frequentes** — salve pontos de controle limpos enquanto itera.

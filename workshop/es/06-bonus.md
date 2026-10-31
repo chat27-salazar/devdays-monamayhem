@@ -21,12 +21,12 @@ Después de que ambos gráficos de contribuciones carguen, compara los totales y
 
 **Qué construir:**
 - Compara las contribuciones totales de ambos usuarios
-- Muestra **"🏆 {username} WINS! 🏆"** con un estilo de celebración si hay un ganador claro
-- Muestra **"🤝 IT'S A TIE! 🤝"** si las contribuciones son iguales
+- Muestra **"🏆 ¡{username} GANA! 🏆"** con un estilo festivo si hay un ganador claro
+- Muestra **"🤝 ¡EMPATE! 🤝"** si las contribuciones son iguales
 - Agrega animación o confeti para más efecto
 
 **Sugerencia de prompt:**
-> After both users' contribution data loads, compare total contributions and display a winner banner. Show "🏆 {username} WINS! 🏆" if one user has more contributions, or "🤝 IT'S A TIE! 🤝" if equal. Make it visually exciting with CSS animations.
+> Cuando se hayan cargado los datos de contribuciones de ambos usuarios, compara los totales y muestra un anuncio del ganador. Muestra "🏆 ¡{username} GANA! 🏆" si uno tiene más contribuciones, o "🤝 ¡EMPATE! 🤝" si tienen la misma cantidad. Dale un aspecto llamativo con animaciones CSS.
 
 ---
 
@@ -41,7 +41,7 @@ Calcula y muestra la racha de contribuciones consecutivas más larga de cada usu
 - Resalta quién tiene la racha más larga
 
 **Sugerencia de prompt:**
-> Add a streak counter feature that analyzes each user's contribution data to find their longest consecutive contribution streak. Display "🔥 Longest Streak: X days" for each user below their contribution graph.
+> Añade un contador de rachas que analice los datos de contribuciones de cada usuario para encontrar su racha más larga de días consecutivos. Muestra "🔥 Racha más larga: X días" debajo del gráfico de contribuciones de cada usuario.
 
 ---
 
@@ -51,12 +51,12 @@ Persiste los resultados de las batallas para que los usuarios puedan ver sus enf
 
 **Qué construir:**
 - Guarda cada resultado de batalla en `localStorage` (nombres de usuario, totales, ganador, marca de tiempo)
-- Agrega una sección **"Recent Battles"** debajo del área principal de batalla
+- Agrega una sección **"Batallas recientes"** debajo del área principal de batalla
 - Muestra las últimas 5–10 batallas con resultados
-- Agrega un botón "Clear History"
+- Agrega un botón "Borrar historial"
 
 **Sugerencia de prompt:**
-> Save battle results to localStorage after each comparison. Add a "Recent Battles" section that displays the last 10 battles with usernames, contribution totals, the winner, and when the battle happened. Include a "Clear History" button.
+> Guarda los resultados de cada batalla en localStorage. Añade una sección "Batallas recientes" que muestre las últimas 10 partidas, con nombres de usuario, totales de contribuciones, ganador y fecha. Incluye un botón "Borrar historial".
 
 ---
 
@@ -71,7 +71,7 @@ Agrega efectos de sonido retro arcade usando la Web Audio API — sin necesidad 
 - Un botón de alternancia para silenciar/activar sonido
 
 **Sugerencia de prompt:**
-> Add retro arcade sound effects using the Web Audio API (no audio files). Play a coin insert sound on battle start, a power-up sound when results load, and an explosion sound on errors. Generate the sounds programmatically with oscillators and gain nodes. Include a mute toggle.
+> Añade efectos de sonido de arcade retro con la Web Audio API (sin archivos de audio). Reproduce el sonido de una moneda al iniciar la batalla, un sonido de potenciación cuando se carguen los resultados y una explosión cuando se produzca un error. Genera los sonidos mediante osciladores y nodos de ganancia. Incluye un control para silenciar el sonido.
 
 ---
 
@@ -81,12 +81,12 @@ Crea suspenso con una cuenta regresiva dramática antes de revelar los resultado
 
 **Qué construir:**
 - Cuando se haga clic en "Battle!", muestra una superposición a pantalla completa
-- Anima: **"3..."** → **"2..."** → **"1..."** → **"⚡ FIGHT! ⚡"**
+- Anima: **"3..."** → **"2..."** → **"1..."** → **"⚡ ¡A LUCHAR! ⚡"**
 - Luego revela los gráficos de contribuciones con una entrada dramática
 - Usa animaciones CSS o temporización con JavaScript
 
 **Sugerencia de prompt:**
-> Add an animated battle sequence when the user clicks "Battle!". Show a countdown overlay: "3..." then "2..." then "1..." then "⚡ FIGHT! ⚡" with each step lasting about 1 second. After the countdown, reveal the results with a slide-in animation.
+> Añade una secuencia animada cuando el usuario haga clic en "Battle!". Muestra una cuenta regresiva superpuesta: "3...", "2...", "1..." y luego "⚡ ¡A LUCHAR! ⚡"; cada paso debe durar aproximadamente 1 segundo. Después de la cuenta regresiva, revela los resultados con una animación de entrada deslizante.
 
 ---
 
@@ -96,12 +96,12 @@ Agrega una leyenda de escala de colores que coincida con la paleta de colores de
 
 **Qué construir:**
 - Una leyenda horizontal mostrando los niveles de intensidad de contribuciones
-- Etiquetas desde **"Less"** hasta **"More"**
+- Etiquetas desde **"Menos"** hasta **"Más"**
 - Usa la paleta de colores real de la respuesta de la API de contribuciones de GitHub
 - Posiciónala cerca de los gráficos de contribuciones
 
 **Sugerencia de prompt:**
-> Add a contribution legend below the graphs showing the color scale from the API's color palette. Display a row of colored squares ranging from "Less" (lightest) to "More" (darkest), matching the actual contribution level colors returned by the API.
+> Añade debajo de los gráficos una leyenda de contribuciones con la escala de colores de la API. Muestra una fila de cuadrados de color que vaya de "Menos" (el más claro) a "Más" (el más oscuro) y coincida con los colores de nivel de contribución que devuelve la API.
 
 ---
 
@@ -110,13 +110,13 @@ Agrega una leyenda de escala de colores que coincida con la paleta de colores de
 Permite que los usuarios compartan sus resultados de batalla con un solo clic.
 
 **Qué construir:**
-- Un botón **"📋 Share Results"** que aparece después de una batalla
+- Un botón **"📋 Compartir resultados"** que aparece después de una batalla
 - Copia un resumen de texto formateado al portapapeles
 - Incluye nombres de usuario, totales de contribuciones y el ganador
-- Muestra un breve mensaje de confirmación "Copied!"
+- Muestra brevemente el mensaje de confirmación "¡Copiado!"
 
 **Sugerencia de prompt:**
-> Add a "📋 Share Results" button that copies a formatted battle summary to the clipboard. The summary should include both usernames, their contribution totals, and who won. Use the Clipboard API and show a brief "Copied to clipboard!" confirmation.
+> Añade un botón "📋 Compartir resultados" que copie al portapapeles un resumen de la batalla con los dos nombres de usuario, sus totales de contribuciones y el ganador. Usa la Clipboard API y muestra brevemente el mensaje "¡Copiado al portapapeles!".
 
 ---
 
@@ -130,7 +130,7 @@ Si quieres explorar más funcionalidades de Copilot CLI después del taller prin
 - Usa `/session` y `/session plan` para inspeccionar cómo el CLI está rastreando tu trabajo actual.
 <!-- track:cli:end -->
 
-## �� ¡Felicitaciones!
+## 🎊 ¡Felicidades!
 
 ¡Has completado el taller **Mona Mayhem: GitHub Battle**! Esto es lo que lograste:
 
@@ -147,7 +147,7 @@ Si quieres explorar más funcionalidades de Copilot CLI después del taller prin
 
 | Habilidad | Lo Que Practicaste |
 |-----------|-------------------|
-| **Context Engineering** | Darle a Copilot los archivos, instrucciones y restricciones correctas |
+| **Ingeniería del contexto** | Proporcionar a Copilot los archivos, las instrucciones y las restricciones adecuadas |
 | **Planificación** | Generar y refinar planes de implementación antes de programar |
 | **Codificación Agéntica** | Delegar trabajo en múltiples archivos y múltiples pasos a Copilot |
 | **Iteración de Diseño** | Comenzar desde una dirección visual y refinar hacia un resultado pulido |
